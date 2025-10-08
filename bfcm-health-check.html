@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhythm Snowsports - BFCM Health Check</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #fafafa;
+            letter-spacing: -0.011em;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+            color: #FFFFFF;
+            padding: 48px 32px;
+            text-align: center;
+            margin-bottom: 48px;
+            border-radius: 16px;
+            position: relative;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        header h1 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 2.5em;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+            color: #FFFFFF !important;
+        }
+        
+        header h2 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 1.8em;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+            color: #FFFFFF !important;
+        }
+        
+        header p {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            opacity: 0.9;
+            color: #FFFFFF !important;
+            font-size: 1.05em;
+        }
+        
+        header span {
+            color: #FFFFFF !important;
+        }
+        
+        .mindarc-logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' stroke='%23FFFFFF' stroke-width='3' fill='none'/><path d='M20 50 Q30 30, 50 50 Q70 70, 80 50' stroke='%23FFFFFF' stroke-width='3.5' fill='none'/><path d='M30 45 Q40 35, 50 45 Q60 55, 70 45' stroke='%23FFFFFF' stroke-width='3' fill='none'/><path d='M35 52 Q42 48, 50 52 Q58 56, 65 52' stroke='%23FFFFFF' stroke-width='2.5' fill='none'/></svg>") center/contain no-repeat;
+        }
+        
+        .score-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-weight: 600;
+            margin: 0 6px;
+            font-size: 0.95em;
+            letter-spacing: -0.01em;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .score-badge:hover {
+            transform: translateY(-2px);
+        }
+        
+        .score-critical { 
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #FFFFFF; 
+            font-weight: 600;
+        }
+        .score-weak { 
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: #FFFFFF; 
+            font-weight: 600;
+        }
+        .score-adequate { 
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+            color: #1a1a1a; 
+            font-weight: 600;
+        }
+        .score-good { 
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: #FFFFFF; 
+            font-weight: 600;
+        }
+        .score-excellent { 
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: #FFFFFF; 
+            font-weight: 600;
+        }
+        
+        .score-critical { background: #e74c3c; color: white; }
+        .score-weak { background: #f39c12; color: white; }
+        .score-adequate { background: #f1c40f; color: #333; }
+        .score-good { background: #27ae60; color: white; }
+        .score-excellent { background: #2ecc71; color: white; }
+        
+        .tabs {
+            display: flex;
+            background: #FFFFFF;
+            border-radius: 8px 8px 0 0;
+            overflow-x: auto;
+            box-shadow: 0 2px 10px rgba(10,10,10,0.1);
+        }
+        
+        .tab {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px 20px;
+            background: #F8F4EF;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: #0A0A0A;
+            white-space: nowrap;
+        }
+        
+        .tab.active {
+            background: #FFFFFF;
+            border-bottom: 3px solid #0A0A0A;
+            color: #0A0A0A;
+        }
+        
+        .tab:hover:not(.active) {
+            background: rgba(10,10,10,0.05);
+        }
+        
+        .tab-content {
+            display: none;
+            background: #FFFFFF;
+            padding: 30px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 2px 10px rgba(10,10,10,0.1);
+            min-height: 600px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #F8F4EF;
+        }
+        
+        .section-title {
+            font-family: 'Roboto', sans-serif;
+            color: #0A0A0A;
+            font-size: 1.8em;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Roboto', sans-serif;
+            color: #0A0A0A;
+        }
+        
+        p, li, span {
+            font-family: 'Poppins', sans-serif;
+            color: #0A0A0A;
+        }
+        
+        /* Add better focus states and improved contrast ratios */
+        .tab:focus {
+            outline: 2px solid #0A0A0A;
+            outline-offset: 2px;
+        }
+        
+        .tab.active:focus {
+            outline: 2px solid #FFFFFF;
+            outline-offset: -2px;
+        }
+        
+        /* Ensure all interactive elements have sufficient target size */
+        .tab {
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Improve contrast for secondary text */
+        .page-details {
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            color: rgba(10,10,10,0.8);
+        }
+        
+        .metric-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9em;
+            color: rgba(10,10,10,0.8);
+            margin-bottom: 5px;
+        }
+        
+        /* Icon styles for professional SVG icons */
+        .tab-icon {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .summary-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .page-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        .score-critical { 
+            background: #e74c3c; 
+            color: #FFFFFF; 
+            font-weight: 600;
+        }
+        .score-weak { 
+            background: #f39c12; 
+            color: #FFFFFF; 
+            font-weight: 600;
+        }
+        .score-adequate { 
+            background: #f1c40f; 
+            color: #0A0A0A; 
+            font-weight: 600;
+        }
+        .score-good { 
+            background: #27ae60; 
+            color: #FFFFFF; 
+            font-weight: 600;
+        }
+        .score-excellent { 
+            background: #2ecc71; 
+            color: #FFFFFF; 
+            font-weight: 600;
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #fafafa, #ffffff);
+            padding: 28px;
+            border-radius: 12px;
+            border-left: 4px solid #1a1a1a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+        }
+        
+        .metric-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+        
+        .metric-value {
+            font-family: 'Inter', sans-serif;
+            font-size: 2em;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.02em;
+        }
+        
+        .bottlenecks {
+            background: linear-gradient(135deg, #fff5f5, #ffffff);
+            border-left: 4px solid #e74c3c;
+            padding: 32px;
+            margin: 32px 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(231, 76, 60, 0.08);
+        }
+        
+        .bottlenecks h3 {
+            color: #c0392b;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+        }
+        
+        .quick-wins {
+            background: linear-gradient(135deg, #f0fff4, #ffffff);
+            border-left: 4px solid #27ae60;
+            padding: 32px;
+            margin: 32px 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(39, 174, 96, 0.08);
+        }
+        
+        .quick-wins h3 {
+            color: #27ae60;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+        }
+        
+        .risk-callout {
+            background: linear-gradient(135deg, #fef9e7, #ffffff);
+            border: 2px solid #f1c40f;
+            padding: 32px;
+            margin: 32px 0;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(241, 196, 15, 0.08);
+        }
+        
+        .risk-callout h3 {
+            color: #d68910;
+            margin-bottom: 16px;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+        }
+        
+        ul {
+            margin-left: 24px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #3498db;
+        }
+        
+        .overall-score {
+            text-align: center;
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .overall-score h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .page-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .page-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ecf0f1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .page-name {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .page-score {
+            margin-bottom: 15px;
+        }
+        
+        .page-details {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                padding: 24px;
+            }
+            
+            header {
+                padding: 32px 24px;
+            }
+            
+            .tab-content {
+                padding: 32px 24px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+                gap: 2px;
+            }
+            
+            .tab {
+                flex: none;
+                min-width: 100%;
+            }
+            
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            header h2 {
+                font-size: 1.4em;
+            }
+            
+            .tab-content {
+                padding: 24px;
+            }
+            
+            .overall-score {
+                padding: 32px 24px;
+            }
+            
+            .section-title {
+                font-size: 1.6em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px;
+            }
+            
+            header {
+                padding: 24px 16px;
+            }
+            
+            .tab-content {
+                padding: 20px;
+            }
+            
+            .overall-score p {
+                font-size: 0.95em !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="mindarc-logo"></div>
+            <h1><span style="font-weight: 600;">Rhythm</span> <span style="font-weight: 300;">Snowsports</span></h1>
+            <h2><span style="font-weight: 600;">BFCM</span> <span style="font-weight: 300;">Health Check Report</span></h2>
+            <p>Transforming eCommerce through human-centered digital experiences</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('summary')">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                </svg>
+                Summary
+            </button>
+            <button class="tab" onclick="showTab('performance')">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.38 8.57l-1.23 1.85a8 8 0 01-.22 7.58H5.07A8 8 0 0115.58 6.85l1.85-1.23A10 10 0 003.35 19a2 2 0 001.72 1h13.85a2 2 0 001.74-1 10 10 0 00-.27-10.43z"/>
+                    <path d="M10.59 15.41a2 2 0 002.83 0l5.66-8.49-8.49 5.66a2 2 0 000 2.83z"/>
+                </svg>
+                Performance
+            </button>
+            <button class="tab" onclick="showTab('ux')">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                UX Essentials
+            </button>
+            <button class="tab" onclick="showTab('accessibility')">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="4" r="2"/>
+                    <path d="M15.89 8.11C15.5 7.72 14.83 7 13.53 7h-2.54c-1.3 0-1.97.72-2.36 1.11A4.01 4.01 0 007 12.27c0 .55.45 1 1 1s1-.45 1-1c0-1.66.29-2.84.78-3.38.21-.24.41-.38.78-.38v2.46C10 12 10.4 13 12 13s2-1 2-2.03V9.51c.37 0 .57.14.78.38.49.54.78 1.72.78 3.38 0 .55.45 1 1 1s1-.45 1-1c0-2.22-1.31-5.16-2.67-5.16z"/>
+                    <path d="M16.5 17c0 1.38-1.12 2.5-2.5 2.5s-2.5-1.12-2.5-2.5c0-.23.04-.45.09-.66l-2.08-1.11c-.39.76-.51 1.68-.51 2.77 0 .55-.45 1-1 1s-1-.45-1-1c0-1.82.35-3.22.83-4.17l-1.39-.74c-.55-.3-.55-1.1 0-1.4l7-3.73c.31-.17.69-.17 1 0l7 3.73c.55.3.55 1.1 0 1.4l-1.39.74c.48.95.83 2.35.83 4.17z"/>
+                </svg>
+                Accessibility
+            </button>
+            <button class="tab" onclick="showTab('site-ops')">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
+                </svg>
+                Site Ops
+            </button>
+            <button class="tab" onclick="showTab('pending-tests')">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12,6 12,12 16,14"/>
+                </svg>
+                Pending Tests
+            </button>
+        </div>
+
+        <!-- Summary Tab -->
+        <div id="summary" class="tab-content active">
+            <div class="overall-score">
+                <h2>Overall BFCM Readiness</h2>
+                <div class="score-badge score-critical">1.8/5 — Critical Risk</div>
+                <p style="margin-top: 20px; font-size: 1.1em; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.7;">
+                    <strong>Your site faces a critical performance crisis that will impact every single visitor during BFCM.</strong> With Largest Contentful Paint (LCP) times ranging from 12.4 to 31.25 seconds—far exceeding Google's 2.5-second threshold—you're looking at massive abandonment at every step of the customer journey.
+                </p>
+                <p style="margin-top: 16px; font-size: 1.05em; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.7;">
+                    Here's what this means in real terms: <strong>53% of mobile users abandon sites that take longer than 3 seconds to load.</strong> At your current 26-31 second load times on product pages, you're essentially closing the door on the majority of potential customers before they even see your products. During BFCM traffic spikes when networks are congested and every millisecond counts, these delays will compound—turning a slow experience into a completely unusable one.
+                </p>
+                <p style="margin-top: 16px; font-size: 1.05em; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.7;">
+                    The conversion funnel breaks down at every stage: visitors bounce from slow-loading collection pages, those who stay can't interact with janky product detail pages (your Cumulative Layout Shift scores of 1.10-1.27 mean elements are jumping around as they try to add items to cart), and the 6.8-7.4MB page weights mean shoppers on mobile networks will experience timeouts and failed requests. <strong>You're not just losing a percentage of conversions—you're at risk of losing the vast majority of potential BFCM revenue.</strong>
+                </p>
+                <p style="margin-top: 16px; font-size: 1.05em; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.7; color: #c0392b; font-weight: 600;">
+                    Bottom line: Without immediate performance fixes, your BFCM campaign will be undermined before it begins. The good news? The fixes are achievable and high-impact—preloading hero images, deferring third-party scripts, and optimizing layout stability can move you from "critical risk" to "BFCM-ready" within 2-3 weeks.
+                </p>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>
+                        <svg class="summary-icon" viewBox="0 0 24 24" fill="#e74c3c">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="15" y1="9" x2="9" y2="15"/>
+                            <line x1="9" y1="9" x2="15" y2="15"/>
+                        </svg>
+                        Critical Issues (100% User Impact)
+                    </h3>
+                    <ul>
+                        <li><strong>Performance Crisis:</strong> 1.1/5 scores, 26-31s LCP times affect ALL users</li>
+                        <li><strong>Massive Layout Shifts:</strong> CLS 1.10-1.27 creating universal frustration</li>
+                        <li><strong>Heavy Payloads:</strong> 6.8-7.4MB pages causing abandonment on slower connections</li>
+                        <li><strong>Console Errors:</strong> JS failures may amplify under BFCM load</li>
+                    </ul>
+                </div>
+
+                <div class="summary-card">
+                    <h3>
+                        <svg class="summary-icon" viewBox="0 0 24 24" fill="#f39c12">
+                            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                        </svg>
+                        Moderate Risks (10-30% User Impact)
+                    </h3>
+                    <ul>
+                        <li><strong>UX Optimization Needed:</strong> 3.8/5 - No blockers but missing best practices</li>
+                        <li><strong>Accessibility Barriers:</strong> 2.8/5 affecting ~15% of users</li>
+                        <li><strong>Heavy App Stack:</strong> 10+ third-party scripts adding overhead</li>
+                        <li><strong>Filter UX:</strong> Selected filters not visible as chips</li>
+                    </ul>
+                </div>
+
+                <div class="summary-card">
+                    <h3>
+                        <svg class="summary-icon" viewBox="0 0 24 24" fill="#27ae60">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        Strengths (Foundation Solid)
+                    </h3>
+                    <ul>
+                        <li><strong>Strong Navigation:</strong> Clear mega-nav + predictive search</li>
+                        <li><strong>Trust Elements:</strong> Comprehensive delivery/return info</li>
+                        <li><strong>Decision Support:</strong> Buying guides and spec tables</li>
+                        <li><strong>Site Operations:</strong> 3.0/5 - Manageable infrastructure</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="risk-callout">
+                <h3>
+                    <svg class="summary-icon" viewBox="0 0 24 24" fill="#d68910">
+                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                    </svg>
+                    BFCM Traffic Spike Risk
+                </h3>
+                <p>With current performance scores (0-14/100) and 6-7MB page weights, mobile users on congested networks will experience multi-second stalls and abandonments. The combination of heavy third-party scripts and console errors may amplify failures under peak load. <strong>Immediate LCP and third-party optimization is critical.</strong></p>
+            </div>
+
+            <div class="quick-wins">
+                <h3>
+                    <svg class="summary-icon" viewBox="0 0 24 24" fill="#27ae60">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
+                    </svg>
+                    Top 5 Pre-BFCM Priorities
+                </h3>
+                <ol>
+                    <li><strong>Fix LCP Images:</strong> Preload hero/gallery images, remove lazy loading (Performance)</li>
+                    <li><strong>Defer Third-Parties:</strong> Load Klaviyo/Hotjar/FB Pixel after interaction (Performance)</li>
+                    <li><strong>Add Sticky ATC:</strong> Mobile product pages need persistent buy button (UX)</li>
+                    <li><strong>Fix Color Contrast:</strong> Ensure 4.5:1 ratio on all CTAs and text (Accessibility)</li>
+                    <li><strong>Consolidate Tracking:</strong> Remove duplicate GA4/reviews to cut JS load (Site Ops)</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Performance Tab -->
+        <div id="performance" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">Performance Analysis</h2>
+                <div class="score-badge score-critical">1.1/5 — Critical</div>
+            </div>
+
+            <div class="page-metrics">
+                <div class="page-card">
+                    <div class="page-name">
+                        <svg class="page-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                        </svg>
+                        Homepage
+                    </div>
+                    <div class="page-score"><span class="score-badge score-weak">2/5 — Weak</span></div>
+                    <div class="page-details">
+                        Performance: 14 | LCP: 12.4s | CLS: 0.00 | TBT: 343ms<br>
+                        Size: 3.7MB | Requests: 203
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <div class="page-name">
+                        <svg class="page-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/>
+                        </svg>
+                        Product List (PLP)
+                    </div>
+                    <div class="page-score"><span class="score-badge score-critical">0/5 — Critical</span></div>
+                    <div class="page-details">
+                        Performance: 0 | LCP: 26.5s | CLS: 1.10 | TBT: 1.76s<br>
+                        Size: 7.42MB | Requests: 248
+                    </div>
+                </div>
+
+                <div class="page-card">
+                    <div class="page-name">
+                        <svg class="page-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                        </svg>
+                        Product Detail (PDP)
+                    </div>
+                    <div class="page-score"><span class="score-badge score-critical">0/5 — Critical</span></div>
+                    <div class="page-details">
+                        Performance: 13 | LCP: 31.25s | CLS: 1.27 | TBT: 2.10s<br>
+                        Size: 6.80MB | Requests: 216
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottlenecks">
+                <h3>
+                    <svg class="summary-icon" viewBox="0 0 24 24" fill="#c0392b">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                    </svg>
+                    Top Performance Bottlenecks
+                </h3>
+                <ul>
+                    <li><strong>LCP Disaster:</strong> Hero images lazy-loaded (Home/PDP) and footer background becomes LCP on PLP (26.5s!)</li>
+                    <li><strong>Massive Layout Shifts:</strong> Grid reflow, header changes, product form shifts (CLS 1.10-1.27)</li>
+                    <li><strong>Third-Party Overload:</strong> Klaviyo, Facebook Pixel, Hotjar, Booqable chunks adding 2+ second delays</li>
+                    <li><strong>Console Errors:</strong> Missing default-passive-events, theme.js errors causing render blocks</li>
+                    <li><strong>Heavy Assets:</strong> Unoptimized images and unused JavaScript inflating payload sizes</li>
+                </ul>
+            </div>
+
+            <div class="quick-wins">
+                <h3>⚡ Performance Quick Wins (Highest ROI)</h3>
+                <ol>
+                    <li>
+                        <strong>Preload LCP Images:</strong>
+                        <br>Add to theme.liquid head: <code>&lt;link rel="preload" as="image" href="hero-image.jpg" fetchpriority="high"&gt;</code>
+                        <br>Remove <code>loading="lazy"</code> from first hero/gallery images
+                    </li>
+                    <li>
+                        <strong>Fix PLP Footer LCP:</strong>
+                        <br>Replace footer background image with CSS gradient or defer load via JS
+                    </li>
+                    <li>
+                        <strong>Reserve Image Space:</strong>
+                        <br>Add <code>aspect-ratio: 1/1</code> to product tiles, set fixed heights for price/title blocks
+                    </li>
+                    <li>
+                        <strong>Defer Third-Parties:</strong>
+                        <br>Load Klaviyo/FB Pixel/Hotjar behind consent + interaction triggers
+                    </li>
+                    <li>
+                        <strong>Split Theme JS:</strong>
+                        <br>Load carousel/PDP widgets only where needed, fix passive event listener warnings
+                    </li>
+                </ol>
+            </div>
+
+            <div class="risk-callout">
+                <h3>⚠️ BFCM Performance Risk</h3>
+                <p><strong>High Abandonment Risk:</strong> With 200-250 requests per page and 6-7.4MB payloads, mobile shoppers on congested networks will see multi-second stalls and janky scrolling. Client-side errors may amplify failures under peak load. Priority: LCP fixes and third-party deferral to prevent cart abandonment.</p>
+            </div>
+        </div>
+
+        <!-- UX Essentials Tab -->
+        <div id="ux" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">UX Essentials</h2>
+                <div class="score-badge score-good">3.8/5 — Good (Minor Optimization Needed)</div>
+            </div>
+
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Navigation Quality</div>
+                    <div class="metric-value">Strong</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Search Experience</div>
+                    <div class="metric-value">Good</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Mobile Commitment</div>
+                    <div class="metric-value">At Risk</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Trust Signals</div>
+                    <div class="metric-value">Scattered</div>
+                </div>
+            </div>
+
+            <div class="quick-wins">
+                <h3>🎯 UX Strengths</h3>
+                <ul>
+                    <li><strong>Mega Navigation:</strong> Clear 9-category structure (Snowboard, Ski, Backcountry, etc.)</li>
+                    <li><strong>Predictive Search:</strong> Shows Popular Searches, Categories, Brands, Blog results</li>
+                    <li><strong>Trust Elements:</strong> Delivery estimator, pick-up options, 14-day returns, 365-day exchange</li>
+                    <li><strong>Decision Support:</strong> Buying guides, sizing info, camber/flex specs, ability level tables</li>
+                    <li><strong>Stock Transparency:</strong> Variant-level inventory + pre-order messaging</li>
+                    <li><strong>Cross-sell:</strong> "You may also like" recommendations on PDP</li>
+                </ul>
+            </div>
+
+            <div class="bottlenecks">
+                <h3>⚠️ UX Risk Areas</h3>
+                <ul>
+                    <li><strong>No Sticky ATC:</strong> Mobile users lose commit action while scrolling product details</li>
+                    <li><strong>Scattered Trust Info:</strong> Delivery, returns, dispatch spread across page vs. near price</li>
+                    <li><strong>Filter Clarity:</strong> Selected filters not shown as chips above grid (easy to lose state)</li>
+                    <li><strong>Size Help Distance:</strong> Buying Guide separate from size selector (friction point)</li>
+                    <li><strong>Cross-sell Friction:</strong> "You may also like" requires leaving PDP to add variants</li>
+                </ul>
+            </div>
+
+            <div class="quick-wins">
+                <h3>🚀 UX Quick Wins (Pre-BFCM)</h3>
+                <ol>
+                    <li>
+                        <strong>Add Sticky ATC Bar (Mobile):</strong>
+                        <br>Show price + selected size + ATC button during scroll
+                        <br><em>Impact: Keeps commit visible during offer/spec browsing</em>
+                    </li>
+                    <li>
+                        <strong>Compress Trust Into 3-Icon Row:</strong>
+                        <br>Fast Dispatch, Easy Returns, Pick-Up Today above ATC
+                        <br><em>Impact: Reduces purchase anxiety at decision moment</em>
+                    </li>
+                    <li>
+                        <strong>"Find Your Size" Micro-CTA:</strong>
+                        <br>Link beside size selector to buying guide/modal
+                        <br><em>Impact: Faster sizing = fewer hesitations/returns</em>
+                    </li>
+                    <li>
+                        <strong>Show Selected Filters as Chips:</strong>
+                        <br>Add "In stock" toggle + filter chips above grid
+                        <br><em>Impact: Prevents dead-ends when inventory moves fast</em>
+                    </li>
+                    <li>
+                        <strong>Quick-Add Cross-sell:</strong>
+                        <br>Variant picker in "You may also like" tiles
+                        <br><em>Impact: Lifts AOV without leaving PDP</em>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Accessibility Tab -->
+        <div id="accessibility" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">Accessibility Analysis</h2>
+                <div class="score-badge score-adequate">2.8/5 — Moderate Impact (15% of Users)</div>
+            </div>
+
+            <div class="page-metrics">
+                <div class="page-card">
+                    <div class="page-name">🏠 Homepage</div>
+                    <div class="page-score">67-69%</div>
+                </div>
+                <div class="page-card">
+                    <div class="page-name">📋 Product List</div>
+                    <div class="page-score">66%</div>
+                </div>
+                <div class="page-card">
+                    <div class="page-name">🛒 Product Detail</div>
+                    <div class="page-score">71%</div>
+                </div>
+            </div>
+
+            <div class="bottlenecks">
+                <h3>🚫 Top 5 Conversion-Impacting Violations</h3>
+                <ol>
+                    <li>
+                        <strong>Insufficient Color Contrast:</strong>
+                        <br>Text on imagery, secondary text, badges fail 4.5:1 ratio
+                        <br><em>Impact: Low legibility kills CTA click-through</em>
+                    </li>
+                    <li>
+                        <strong>Icon-Only Controls Lack Names:</strong>
+                        <br>Filters, wishlist, social icons invisible to screen readers
+                        <br><em>Impact: AT users can't operate key functions → drop-offs</em>
+                    </li>
+                    <li>
+                        <strong>Buttons/Links Without Names:</strong>
+                        <br>Card CTAs, SVG links missing aria-label or inner text
+                        <br><em>Impact: ATC/favorite actions invisible to assistive tech</em>
+                    </li>
+                    <li>
+                        <strong>Tap Targets Too Small:</strong>
+                        <br>Filters, chips, pagination, social under 44×44px
+                        <br><em>Impact: Mis-taps increase mobile friction/abandonment</em>
+                    </li>
+                    <li>
+                        <strong>Poor Heading/List Structure:</strong>
+                        <br>Heading skips, lists without proper li elements
+                        <br><em>Impact: Breaks keyboard nav during deal hunting</em>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="quick-wins">
+                <h3>♿ Accessibility Quick Wins (High Impact)</h3>
+                <ol>
+                    <li>
+                        <strong>Enable Pinch-Zoom:</strong>
+                        <br>Change viewport meta to allow user scaling
+                        <br><code>width=device-width,initial-scale=1</code> (remove user-scalable=no)
+                    </li>
+                    <li>
+                        <strong>Add Accessible Names to Icon Controls:</strong>
+                        <br><code>&lt;button&gt;&lt;span class="visually-hidden"&gt;Open filters&lt;/span&gt;{% icon %}&lt;/button&gt;</code>
+                        <br>Apply to filters, wishlist, share, close buttons
+                    </li>
+                    <li>
+                        <strong>Raise Tap Targets to 44px:</strong>
+                        <br><code>.hit-area { display:inline-flex; padding:.625rem; }</code>
+                        <br>Apply to filters, pagination, chips, social icons
+                    </li>
+                    <li>
+                        <strong>Fix Product Image Alt Text:</strong>
+                        <br><code>alt: product.featured_image.alt | default: product.title</code>
+                        <br>Improves decision support when images fail/slow
+                    </li>
+                    <li>
+                        <strong>Fix Heading Hierarchy:</strong>
+                        <br>H1 for category/product, H2 for sections, no skips
+                        <br>Improves keyboard navigation of deals
+                    </li>
+                </ol>
+            </div>
+
+            <div class="risk-callout">
+                <h3>⚠️ BFCM Accessibility Risk</h3>
+                <p>Multiple A/AA failures on contrast, control names, tap targets, and structure will hinder promo discovery and cart progression for 15%+ of users (keyboard/assistive technology users). During peak traffic, accessibility barriers become conversion killers.</p>
+            </div>
+        </div>
+
+        <!-- Site Ops Tab -->
+        <div id="site-ops" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">Site Operations</h2>
+                <div class="score-badge score-adequate">3/5 — Adequate (Some Risk)</div>
+            </div>
+
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Theme</div>
+                    <div class="metric-value">Astro</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Active Apps</div>
+                    <div class="metric-value">10+ Scripts</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Analytics Setup</div>
+                    <div class="metric-value">GTM + GA4</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Announcement System</div>
+                    <div class="metric-value">Hextom QAB</div>
+                </div>
+            </div>
+
+            <div class="bottlenecks">
+                <h3>⚠️ Current App Stack & Risk Areas</h3>
+                <ul>
+                    <li><strong>Heavy Third-Party Load:</strong> Klaviyo, GTM, GA4, Meta Pixel, Hotjar, Clarity, Gorgias, KiwiSizing, Booqable</li>
+                    <li><strong>Potential Tracking Duplication:</strong> GA4 running in both GTM and hardcoded gtag</li>
+                    <li><strong>Console 404 Errors:</strong> Failing resources on PDP affecting reliability</li>
+                    <li><strong>Overlapping Reviews:</strong> Klaviyo Reviews + separate CloudFront reviews widget</li>
+                    <li><strong>Unscoped App Embeds:</strong> KiwiSizing/Gorgias loading globally vs. where needed</li>
+                </ul>
+            </div>
+
+            <div class="quick-wins">
+                <h3>⚙️ Site Ops Quick Wins</h3>
+                <ol>
+                    <li>
+                        <strong>Consolidate Reviews to One Provider:</strong>
+                        <br>Remove duplicate between Klaviyo Reviews and CloudFront widget
+                        <br><em>Impact: Cuts JS load and prevents double rendering</em>
+                    </li>
+                    <li>
+                        <strong>De-duplicate Tracking:</strong>
+                        <br>Run GA4 only via GTM, remove hardcoded gtag.js
+                        <br><em>Impact: Reduces script conflicts and load time</em>
+                    </li>
+                    <li>
+                        <strong>Scope Heavy App Embeds:</strong>
+                        <br>KiwiSizing → PDP only | Gorgias → load on interaction | Booqable → Hire flows only
+                        <br><em>Impact: Faster page loads on non-applicable pages</em>
+                    </li>
+                    <li>
+                        <strong>Fix Console 404s:</strong>
+                        <br>Audit PDP failing requests, remove/replace broken includes
+                        <br><em>Impact: Improves resilience and reduces GTM noise</em>
+                    </li>
+                    <li>
+                        <strong>BFCM Announcement Setup:</strong>
+                        <br>Use Hextom QAB for promos, set start/end times, hide on checkout
+                        <br><em>Impact: Controlled messaging without checkout distraction</em>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="risk-callout">
+                <h3>🛡️ Fail-Safe Rollback Plan</h3>
+                <ol>
+                    <li><strong>Create "Live – Backup" theme now</strong> (duplicate current theme with date/time)</li>
+                    <li><strong>Download theme as ZIP backup</strong> (Theme ID: t/203)</li>
+                    <li><strong>Export Navigation & URL redirects CSV</strong></li>
+                    <li><strong>Screenshot all Theme Settings</strong> (Header/Footer/Cart, App blocks)</li>
+                    <li><strong>Set GTM "Pre-BFCM Stable" version</strong> for instant rollback</li>
+                    <li><strong>Bookmark App Embed toggles</strong> (Klaviyo, Gorgias, KiwiSizing, Booqable, Hotjar, Clarity, QAB)</li>
+                </ol>
+                <p><strong>Emergency Kill-Switch Order:</strong> Recordings (Clarity/Hotjar) → Chat/Convert (Gorgias) → Reviews/Size Chart → Core scripts only</p>
+            </div>
+        </div>
+
+        <!-- Pending Tests Tab -->
+        <div id="pending-tests" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">BFCM Areas Not Yet Tested</h2>
+                <div class="score-badge" style="background: #95a5a6; color: white;">Awaiting Content</div>
+            </div>
+
+            <div style="background: #fff3cd; border: 2px solid #ffc107; padding: 20px; margin-bottom: 30px; border-radius: 8px;">
+                <h3 style="color: #856404; margin-bottom: 15px;">
+                    <svg class="summary-icon" viewBox="0 0 24 24" fill="#856404">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 16v-4M12 8h.01"/>
+                    </svg>
+                    Testing Status
+                </h3>
+                <p><strong>Current Limitation:</strong> BFCM-specific offers, campaigns, and promotional content are not yet live on the site. The following areas require testing once promotional materials are deployed, following the specified timeline below.</p>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-card" style="border-top-color: #e74c3c;">
+                    <h3>🎯 Offers & Promotions Readiness</h3>
+                    <div class="score-badge" style="background: #95a5a6; color: white; margin-bottom: 15px;">Not Yet Available</div>
+                    
+                    <h4 style="color: #c0392b; margin: 15px 0 10px;">Why This Matters:</h4>
+                    <p>Discount mechanics, promo codes, and percentage-off offers are core BFCM conversion drivers. Broken promotional logic = immediate revenue loss during peak traffic.</p>
+                    
+                    <h4 style="color: #c0392b; margin: 15px 0 10px;">What to Test (Once Available):</h4>
+                    <ul>
+                        <li>Discount code application and stacking rules</li>
+                        <li>Percentage vs. fixed-amount discount display accuracy</li>
+                        <li>Automatic discount triggers (cart thresholds, product collections)</li>
+                        <li>BOGO, bundle, and tiered pricing mechanics</li>
+                        <li>Promo banner messaging consistency across pages</li>
+                        <li>Mobile promotional UI (banners, badges, pricing displays)</li>
+                    </ul>
+                    
+                    <h4 style="color: #27ae60; margin: 15px 0 10px;">📅 When to Test:</h4>
+                    <p><strong>2 weeks before BFCM launch</strong> - Manual journey testing across all discount scenarios</p>
+                </div>
+
+                <div class="summary-card" style="border-top-color: #9b59b6;">
+                    <h3>🚀 Campaign Landing Readiness</h3>
+                    <div class="score-badge" style="background: #95a5a6; color: white; margin-bottom: 15px;">Not Yet Available</div>
+                    
+                    <h4 style="color: #8e44ad; margin: 15px 0 10px;">Why This Matters:</h4>
+                    <p>Dedicated BFCM landing pages will handle email/ad traffic spikes. Poor landing page performance = wasted marketing spend and missed conversions.</p>
+                    
+                    <h4 style="color: #8e44ad; margin: 15px 0 10px;">What to Test (Once Available):</h4>
+                    <ul>
+                        <li>Landing page load performance (aim for <2.5s LCP)</li>
+                        <li>Hero offer prominence and CTA visibility</li>
+                        <li>Featured product grid and quick-add functionality</li>
+                        <li>UTM parameter tracking and analytics firing</li>
+                        <li>Mobile-responsive promotional layouts</li>
+                        <li>Cross-browser compatibility (Safari, Chrome, Firefox)</li>
+                    </ul>
+                    
+                    <h4 style="color: #27ae60; margin: 15px 0 10px;">📅 When to Test:</h4>
+                    <p><strong>1 week before campaigns launch</strong> - Performance + journey testing with UTM tracking verification</p>
+                </div>
+
+                <div class="summary-card" style="border-top-color: #f39c12;">
+                    <h3>📧 Email/SMS Capture & Lifecycle</h3>
+                    <div class="score-badge" style="background: #95a5a6; color: white; margin-bottom: 15px;">Not Yet Available</div>
+                    
+                    <h4 style="color: #d68910; margin: 15px 0 10px;">Why This Matters:</h4>
+                    <p>BFCM email/SMS flows drive repeat purchases and cart recovery. Broken signup flows or lifecycle triggers = lost revenue beyond the initial sale.</p>
+                    
+                    <h4 style="color: #d68910; margin: 15px 0 10px;">What to Test (Once Available):</h4>
+                    <ul>
+                        <li>BFCM-specific pop-up forms and exit-intent triggers</li>
+                        <li>Early access list signup and confirmation emails</li>
+                        <li>Welcome series with BFCM offer integration</li>
+                        <li>Cart abandonment emails with promotional pricing</li>
+                        <li>Post-purchase upsell and review request flows</li>
+                        <li>SMS opt-in compliance and delivery verification</li>
+                    </ul>
+                    
+                    <h4 style="color: #27ae60; margin: 15px 0 10px;">📅 When to Test:</h4>
+                    <p><strong>2-3 weeks before BFCM</strong> - End-to-end flow testing with real email addresses and phone numbers</p>
+                </div>
+
+                <div class="summary-card" style="border-top-color: #1abc9c;">
+                    <h3>🔍 Search/SEO & BFCM Content</h3>
+                    <div class="score-badge" style="background: #95a5a6; color: white; margin-bottom: 15px;">Not Yet Available</div>
+                    
+                    <h4 style="color: #16a085; margin: 15px 0 10px;">Why This Matters:</h4>
+                    <p>BFCM-optimized content captures organic traffic for high-intent shoppers. Missing or poorly optimized content = lost organic revenue during peak search volume.</p>
+                    
+                    <h4 style="color: #16a085; margin: 15px 0 10px;">What to Test (Once Available):</h4>
+                    <ul>
+                        <li>BFCM landing page SEO (title tags, meta descriptions, schema)</li>
+                        <li>Internal search functionality for "black friday", "cyber monday", "sale"</li>
+                        <li>Product collection pages with BFCM-optimized copy</li>
+                        <li>Blog content and buying guides with seasonal keywords</li>
+                        <li>Site search autocomplete for promotional terms</li>
+                        <li>Structured data markup for offers and promotions</li>
+                    </ul>
+                    
+                    <h4 style="color: #27ae60; margin: 15px 0 10px;">📅 When to Test:</h4>
+                    <p><strong>3-4 weeks before BFCM</strong> - SEO audit + internal search testing to allow for optimization time</p>
+                </div>
+            </div>
+
+            <div class="quick-wins">
+                <h3>📋 Testing Preparation Checklist</h3>
+                <p>Actions to take <strong>now</strong> to prepare for upcoming BFCM testing phases:</p>
+                <ol>
+                    <li>
+                        <strong>Set Up Staging Environment:</strong>
+                        <br>Create duplicate theme for BFCM testing without affecting live site
+                        <br><em>Benefit: Safe testing environment for promotional content</em>
+                    </li>
+                    <li>
+                        <strong>Prepare Test User Accounts:</strong>
+                        <br>Create customer accounts with different profiles (new, returning, VIP)
+                        <br><em>Benefit: Comprehensive discount logic testing</em>
+                    </li>
+                    <li>
+                        <strong>Document Current Baseline Metrics:</strong>
+                        <br>Record non-BFCM performance scores for comparison
+                        <br><em>Benefit: Measure promotional content impact on site speed</em>
+                    </li>
+                    <li>
+                        <strong>Set Up Analytics Goals:</strong>
+                        <br>Configure GTM/GA4 events for BFCM-specific conversions
+                        <br><em>Benefit: Ready to track campaign effectiveness immediately</em>
+                    </li>
+                    <li>
+                        <strong>Prepare Testing Scripts:</strong>
+                        <br>Write step-by-step testing procedures for each promotional scenario
+                        <br><em>Benefit: Systematic, repeatable testing process</em>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="risk-callout">
+                <h3>⚠️ Critical Testing Timeline</h3>
+                <p><strong>Don't Leave to Last Minute:</strong> BFCM promotional testing requires sufficient buffer time for fixes. Late-discovered issues in discount logic or campaign landing pages can't be resolved during peak traffic. Plan testing phases with at least 1 week buffer before go-live for each component.</p>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                    <h4>Recommended Testing Sequence:</h4>
+                    <ol>
+                        <li><strong>Week -4:</strong> SEO/Content audit and optimization</li>
+                        <li><strong>Week -3:</strong> Email/SMS flow setup and testing</li>
+                        <li><strong>Week -2:</strong> Discount mechanics and offers testing</li>
+                        <li><strong>Week -1:</strong> Campaign landing pages and final integration testing</li>
+                        <li><strong>Go-Live:</strong> Monitor and be ready for quick fixes only</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
